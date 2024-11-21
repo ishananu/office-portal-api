@@ -7,10 +7,14 @@ import config from '@config/config';
 import employeeRouter from '@routes/employee.routes';
 import productRouter from '@routes/product.routes';
 import { Database } from './src/Database';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUI from 'swagger-ui-express';
 
 const startServer = () => {
   const app: Express = express();
   const port = config.port || 3000;
+  const apiVersion = '/api/v1/';
+
   app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
   app.use(helmet());
   app.use(cookieParser());
@@ -19,8 +23,23 @@ const startServer = () => {
 
   Database.getInstance();
 
-  app.use('/api/users', employeeRouter);
+  app.use('/api/employees', employeeRouter);
   app.use('/api/products', productRouter);
+
+  const swaggerDocs = swaggerJsdoc({
+    definition: {
+      info: {
+        title: 'Office Portal API',
+        contact: { name: 'Office Portal DEV Team', email: '' },
+        description: 'Office Portal API information',
+        version: '1.0.0'
+      },
+      basePath: '/'
+    },
+    apis: ['./src/routes/*.routes.ts']
+  });
+
+  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
   app.listen(Number(port), async () => {
     console.log(`🚀  Server ready at ${port}`);

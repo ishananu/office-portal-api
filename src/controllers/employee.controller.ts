@@ -17,9 +17,7 @@ class EmployeeController {
       const user = await EmployeeService.createEmployee(req.body);
       res.status(201).json({ success: true, data: user });
     } catch (error) {
-      res
-        .status(error?.code ?? 500)
-        .json({ success: false, message: error.message });
+      res.status(500).json({ success: false, message: error?.message });
     }
   }
 

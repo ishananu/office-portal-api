@@ -3,4 +3,10 @@ interface IPagination {
   skip: number;
 }
 
-export { IPagination };
+interface ITokenPayload {
+  id: string;
+  exp: number;
+  iat: number;
+}
+
+export { IPagination, ITokenPayload };

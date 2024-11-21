@@ -1,8 +1,8 @@
-import { EResponseCode } from '../common/enums';
 import { Request } from 'express';
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
-import config from '../../config/config';
-import { ITokenPayload } from '../common/types';
+import { EResponseCode } from '@shared/enum';
+import { ITokenPayload } from '@shared/types';
+import config from '@config/config';
 
 function getUser(req: Request, callBack) {
   const token =
