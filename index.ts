@@ -22,7 +22,7 @@ const startServer = () => {
   app.use('/api/users', employeeRouter);
   app.use('/api/products', productRouter);
 
-  app.listen(port, async () => {
+  app.listen(Number(port), async () => {
     console.log(`🚀  Server ready at ${port}`);
   });
 };
