@@ -22,12 +22,15 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@models/*": ["models/*"],
+      "@models/*": ["src/models/*"],
       "@config/*": ["config/*"],
       "@dbservice/*": ["src/dbservice/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@services/*": ["src/services/*"],
       "@routes/*": ["src/routes/*"],
       "@middleware/*": ["src/middleware/*"],
-      "@common/*": ["src/common/*"]
+      "@common/*": ["src/common/*"],
+      "@shared/*": ["src/shared/*"]
     },
     "types": ["node"]
   },
