@@ -11,6 +11,22 @@ class ProductService {
   async getProduct(pagination: IPagination): Promise<IProduct[]> {
     return paginateQuery<IProduct>(Product, {}, pagination);
   }
+
+  async updateProduct(
+    id: string,
+    updates: Partial<IProduct>
+  ): Promise<IProduct | null> {
+    const updatedProduct = await Product.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true
+    });
+    return updatedProduct;
+  }
+
+  async deleteProduct(id: string): Promise<IProduct | null> {
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    return deletedProduct;
+  }
 }
 
 export default new ProductService();
