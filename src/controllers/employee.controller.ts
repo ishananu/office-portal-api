@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import EmployeeService from '@services/employee.service';
 import { EResponseCode } from '@shared/enum';
 import { saveEmployeeSchma } from '@shared/validation';
+import { handlePagination } from '@shared/helpers';
 
 class EmployeeController {
   async createEmployee(req: Request, res: Response): Promise<void> {
@@ -21,9 +22,9 @@ class EmployeeController {
     }
   }
 
-  async getEmployee(_req: Request, res: Response): Promise<void> {
+  async getEmployee(req: Request, res: Response): Promise<void> {
     try {
-      const users = await EmployeeService.getEmployee();
+      const users = await EmployeeService.getEmployee(handlePagination(req));
       res.status(200).json({ success: true, data: users });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });

@@ -1,3 +1,5 @@
+import { paginateQuery } from '@shared/helpers';
+import { IPagination } from '@shared/types';
 import Employee, { IEmployee } from 'src/models/Employee';
 
 class EmployeeService {
@@ -6,8 +8,8 @@ class EmployeeService {
     return await employee.save();
   }
 
-  async getEmployee(): Promise<IEmployee[]> {
-    return await Employee.find();
+  async getEmployee(pagination: IPagination): Promise<IEmployee[]> {
+    return paginateQuery<IEmployee>(Employee, {}, pagination);
   }
 }
 

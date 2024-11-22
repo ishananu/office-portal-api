@@ -1,3 +1,4 @@
+import { handlePagination } from '@shared/helpers';
 import { Request, Response } from 'express';
 import productService from 'src/services/product.service';
 
@@ -11,9 +12,9 @@ class ProductController {
     }
   }
 
-  async getProduct(_req: Request, res: Response): Promise<void> {
+  async getProduct(req: Request, res: Response): Promise<void> {
     try {
-      const users = await productService.getProduct();
+      const users = await productService.getProduct(handlePagination(req));
       res.status(200).json({ success: true, data: users });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
