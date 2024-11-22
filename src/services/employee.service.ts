@@ -11,6 +11,24 @@ class EmployeeService {
   async getEmployee(pagination: IPagination): Promise<IEmployee[]> {
     return paginateQuery<IEmployee>(Employee, {}, pagination, { password: 0 });
   }
+
+  async updateEmployee(
+    id: string,
+    updates: Partial<IEmployee>
+  ): Promise<IEmployee | null> {
+    const updatedEmployee = await Employee.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true
+    }).select('-password');
+    return updatedEmployee;
+  }
+
+  async deleteEmployee(id: string): Promise<IEmployee | null> {
+    const deletedEmployee = await Employee.findByIdAndDelete(id).select(
+      '-password'
+    );
+    return deletedEmployee;
+  }
 }
 
 export default new EmployeeService();
