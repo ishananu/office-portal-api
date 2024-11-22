@@ -22,4 +22,9 @@ const saveEmployeeSchma = Joi.object({
   })
 });
 
-export { saveEmployeeSchma };
+const updateEmployeeSchema = saveEmployeeSchma.fork(
+  ['name', 'email', 'password'],
+  (field) => field.optional()
+);
+
+export { saveEmployeeSchma, updateEmployeeSchema };

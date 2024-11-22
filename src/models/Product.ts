@@ -1,6 +1,4 @@
 import { Schema, model, Document } from 'mongoose';
-
-// Define an interface for the Product document
 export interface IProduct extends Document {
   name: string;
   price: number;
@@ -8,9 +6,9 @@ export interface IProduct extends Document {
   category: string;
   stock: number;
   createdAt: Date;
+  updatedAt: Date;
 }
 
-// Define the schema
 const ProductSchema = new Schema<IProduct>({
   name: {
     type: String,
@@ -35,10 +33,13 @@ const ProductSchema = new Schema<IProduct>({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
   }
 });
 
-// Create the model
 const Product = model<IProduct>('Product', ProductSchema);
 
 export default Product;

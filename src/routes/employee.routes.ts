@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import EmployeeController from '@controllers/employee.controller';
+import validateReq from '@middleware/validateReq';
+import { saveEmployeeSchma } from '@shared/validation';
 
 const employeeRouter = Router();
 
@@ -70,7 +72,11 @@ const employeeRouter = Router();
  *         description: Internal server error.
  */
 
-employeeRouter.post('/', EmployeeController.createEmployee);
+employeeRouter.post(
+  '/',
+  validateReq(saveEmployeeSchma),
+  EmployeeController.createEmployee
+);
 employeeRouter.get('/', EmployeeController.getEmployee);
 
 export default employeeRouter;

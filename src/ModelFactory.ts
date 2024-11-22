@@ -1,5 +1,5 @@
-import Employee from './models/Employee';
-import Product from './models/Product';
+import Employee from '@models/Employee';
+import Product from '@models/Product';
 
 type ModelType = 'Employee' | 'Product';
 

@@ -1,20 +1,10 @@
 import { Request, Response } from 'express';
 import EmployeeService from '@services/employee.service';
-import { EResponseCode } from '@shared/enum';
-import { saveEmployeeSchma } from '@shared/validation';
 import { handlePagination } from '@shared/helpers';
 
 class EmployeeController {
   async createEmployee(req: Request, res: Response): Promise<void> {
     try {
-      const validation = saveEmployeeSchma.validate(req.body);
-      if (validation.error) {
-        throw {
-          name: 'Validation error!',
-          message: validation.error.details.map((e) => e.message),
-          code: EResponseCode.FORBIDDEN
-        };
-      }
       const user = await EmployeeService.createEmployee(req.body);
       res.status(201).json({ success: true, data: user });
     } catch (error) {

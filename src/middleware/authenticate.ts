@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import { EResponseCode } from '@shared/enum';
 import { ITokenPayload } from '@shared/types';
@@ -26,7 +26,7 @@ const parseIp = (req) => {
     req.socket?.remoteAddress;
 };
 
-export function userRequired(req: Request, res, next) {
+export function userRequired(req: Request, res: Response, next: NextFunction) {
   getUser(req, (err, user) => {
     if (err || user === null) {
       if (err instanceof TokenExpiredError) {

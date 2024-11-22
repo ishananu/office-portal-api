@@ -1,6 +1,6 @@
 import { handlePagination } from '@shared/helpers';
 import { Request, Response } from 'express';
-import productService from 'src/services/product.service';
+import productService from '@services/product.service';
 
 class ProductController {
   async createProduct(req: Request, res: Response): Promise<void> {
