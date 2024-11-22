@@ -32,7 +32,7 @@
       "@common/*": ["src/common/*"],
       "@shared/*": ["src/shared/*"]
     },
-    "types": ["node"]
+    "types": ["node", "jest"]
   },
   "ts-node": {
     "require": ["tsconfig-paths/register"]
