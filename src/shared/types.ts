@@ -9,4 +9,9 @@ interface ITokenPayload {
   iat: number;
 }
 
-export { IPagination, ITokenPayload };
+interface IRefreshTokenReturn {
+  accessToken: string;
+  refreshToken?: string;
+}
+
+export { IPagination, ITokenPayload, IRefreshTokenReturn };

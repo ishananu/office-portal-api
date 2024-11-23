@@ -60,9 +60,15 @@ const updateProductSchema = saveProductSchema.fork(
   (field) => field.optional()
 );
 
+const signinSchema = Joi.object({
+  email: Joi.string().min(5).required().email(),
+  pass: Joi.string().min(5).required()
+});
+
 export {
   saveEmployeeSchma,
   updateEmployeeSchema,
   saveProductSchema,
-  updateProductSchema
+  updateProductSchema,
+  signinSchema
 };

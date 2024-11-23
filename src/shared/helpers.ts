@@ -1,5 +1,7 @@
 import { Request } from 'express';
-import { IPagination } from './types';
+import { IPagination, IRefreshToken } from './types';
+import jwt from 'jsonwebtoken';
+import config from '@config/config';
 
 function handlePagination(req: Request): IPagination {
   const maxNumberOfResults: number = 20;
@@ -34,4 +36,27 @@ async function paginateQuery<T>(
     .exec();
 }
 
-export { handlePagination, paginateQuery };
+function generateAccessToken(user) {
+  return jwt.sign(user, config.secretToken, { expiresIn: '30m' }); // 15 min should be
+}
+
+function createSignInUserToken(
+  userData: { id: string },
+  initialCreation: boolean = false,
+  expiredAt?: Date
+): IRefreshToken {
+  const accessToken = generateAccessToken(userData);
+  if (initialCreation) {
+    const refreshToken = jwt.sign(
+      { data: userData, exp: expiredAt?.getTime(), iat: new Date().getTime() },
+      config.refreshToken
+    );
+    return { accessToken, refreshToken };
+  } else {
+    return {
+      accessToken
+    };
+  }
+}
+
+export { handlePagination, paginateQuery, createSignInUserToken };

@@ -9,6 +9,7 @@ import productRouter from '@routes/product.routes';
 import { Database } from './src/Database';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
+import authRouter from '@routes/auth.routes';
 
 const startServer = () => {
   const app: Express = express();
@@ -25,6 +26,7 @@ const startServer = () => {
 
   app.use('/api/employees', employeeRouter);
   app.use('/api/products', productRouter);
+  app.use('/api/auth', authRouter);
 
   const swaggerDocs = swaggerJsdoc({
     definition: {
