@@ -1,5 +1,6 @@
-import authController from '@controllers/auth.controller';
-import { userNotRequired } from '@middleware/authenticate';
+import AuthController from '@controllers/auth.controller';
+import asyncMiddleware from '@middleware/async';
+// import { userNotRequired } from '@middleware/authenticate';
 import validateReq from '@middleware/validateReq';
 import { signinSchema } from '@shared/validation';
 import { Router } from 'express';
@@ -7,10 +8,9 @@ import { Router } from 'express';
 const authRouter = Router();
 
 authRouter.post(
-  '/signin',
-  userNotRequired,
+  '/login',
   validateReq(signinSchema),
-  authController.loginUser
+  asyncMiddleware(AuthController.loginUser)
 );
 
 export default authRouter;

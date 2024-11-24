@@ -1,65 +1,81 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt, { TokenExpiredError } from 'jsonwebtoken';
+import jwt, { TokenExpiredError, VerifyErrors } from 'jsonwebtoken';
 import { EResponseCode } from '@shared/enum';
 import { ITokenPayload } from '@shared/types';
 import config from '@config/config';
 
-function getUser(req: Request, callBack) {
+function getUser(req: Request): ITokenPayload {
   const token =
     req.headers &&
     req.headers.authorization &&
     req.headers.authorization.split(' ')[1];
 
-  if (!!!token) {
-    return callBack(null, null);
+  if (!token) {
+    throw {
+      success: false,
+      message: 'Invalid token'
+    };
   }
-  jwt.verify(token, config.secretToken, (err, user) => {
-    if (err) {
-      return callBack(err);
-    }
-    return callBack(err, user);
-  });
+
+  try {
+    const user = jwt.verify(
+      token,
+      config.secretToken as jwt.Secret
+    ) as ITokenPayload;
+    return user;
+  } catch (err) {
+    throw {
+      success: false,
+      message: 'Invalid token'
+    };
+  }
 }
 
-const parseIp = (req) => {
-  req.headers['x-forwarded-for']?.split(',').shift() ||
-    req.socket?.remoteAddress;
-};
-
-export function userRequired(req: Request, res: Response, next: NextFunction) {
-  getUser(req, (err, user) => {
-    if (err || user === null) {
-      if (err instanceof TokenExpiredError) {
-        return res.status(EResponseCode.UNAUTHORIZED).send({
-          success: false,
-          message: 'Invalid token'
-        });
-      } else {
-        return res.status(EResponseCode.FORBIDDEN).send({
-          success: false,
-          message: 'Action not authorized'
-        });
-      }
+export async function userRequired(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const user = await getUser(req);
+    if (!user) {
+      throw {
+        success: false,
+        message: 'Action not authorized'
+      };
     }
 
     req.body = Array.isArray(req.body)
       ? { data: req.body, token: user }
       : { ...req.body, token: user };
+
     next();
-  });
-}
-
-export function userNotRequired(req: Request, _res, next) {
-  getUser(req, (_err, user: ITokenPayload) => {
-    console.log('user ', user);
-
-    if (user) {
-      req.body = { ...req.body, token: user };
+  } catch (err) {
+    if (err instanceof TokenExpiredError) {
+      res.status(EResponseCode.UNAUTHORIZED).send({
+        success: false,
+        message: 'Invalid token'
+      });
     }
-    next();
-  });
+
+    res.status(EResponseCode.FORBIDDEN).send({
+      success: false,
+      message: 'Action not authorized'
+    });
+  }
 }
+
+// export function userNotRequired(req: Request, _res, next) {
+//   getUser(req, (_err, user: ITokenPayload) => {
+//     console.log('user ', user);
+
+//     if (user) {
+//       req.body = { ...req.body, token: user };
+//     }
+//     next();
+//   });
+// }
 
 export function decodeRefreshToken(token: string) {
-  return jwt.decode(token, config.refreshToken);
+  return jwt.decode(token);
 }

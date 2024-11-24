@@ -2,6 +2,8 @@ import { Router } from 'express';
 import EmployeeController from '@controllers/employee.controller';
 import validateReq from '@middleware/validateReq';
 import { saveEmployeeSchma } from '@shared/validation';
+import { userRequired } from '@middleware/authenticate';
+import asyncMiddleware from '@middleware/async';
 
 const employeeRouter = Router();
 
@@ -152,7 +154,11 @@ employeeRouter.post(
   EmployeeController.createEmployee
 );
 
-employeeRouter.get('/', EmployeeController.getEmployee);
+employeeRouter.get(
+  '/',
+  userRequired,
+  asyncMiddleware(EmployeeController.getEmployee)
+);
 
 employeeRouter.put('/:id', EmployeeController.updateEmployee);
 

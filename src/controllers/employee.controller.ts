@@ -1,23 +1,34 @@
 import { Request, Response } from 'express';
 import EmployeeService from '@services/employee.service';
 import { handlePagination } from '@shared/helpers';
+import bcrypt from 'bcryptjs';
+import config from '@config/config';
+import { IEmployee } from '@models/Employee';
 
 class EmployeeController {
   async createEmployee(req: Request, res: Response): Promise<void> {
     try {
-      const user = await EmployeeService.createEmployee(req.body);
+      const hashedPassword = await bcrypt.hash(
+        req.body.password!,
+        Number(config.saltRounds)
+      );
+      const user = await EmployeeService.createEmployee({
+        ...req.body,
+        password: hashedPassword
+      });
+
       res.status(201).json({ success: true, data: user });
     } catch (error) {
       res.status(500).json({ success: false, message: error?.message });
     }
   }
 
-  async getEmployee(req: Request, res: Response): Promise<void> {
+  async getEmployee(req: Request): Promise<IEmployee[]> {
     try {
       const users = await EmployeeService.getEmployee(handlePagination(req));
-      res.status(200).json({ success: true, data: users });
+      return users;
     } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
+      return error;
     }
   }
 

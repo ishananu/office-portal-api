@@ -9,10 +9,6 @@ export interface IRefreshToken extends Document {
 }
 
 const RefreshTokenSchema = new Schema<IRefreshToken>({
-  id: {
-    type: String,
-    required: true
-  },
   usersId: {
     type: String,
     required: true,

@@ -7,6 +7,7 @@ const config = {
   port: env.APP_PORT,
   secretToken: env.ACCESS_TOKEN_SECRET,
   refreshToken: env.REFRESH_TOKEN_SECRET,
+  saltRounds: env.SALT_ROUNDS,
   databases: {
     mysql: {
       user: env.DB_USERNAME,

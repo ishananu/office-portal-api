@@ -14,7 +14,6 @@ import authRouter from '@routes/auth.routes';
 const startServer = () => {
   const app: Express = express();
   const port = config.port || 3000;
-  const apiVersion = '/api/v1/';
 
   app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
   app.use(helmet());
@@ -42,6 +41,17 @@ const startServer = () => {
   });
 
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
+  app.use((err, _req, res, next) => {
+    if (err instanceof SyntaxError && 'body' in err) {
+      console.error('Invalid JSON:', err.message);
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid JSON format'
+      });
+    }
+    next(err);
+  });
 
   app.listen(Number(port), async () => {
     console.log(`🚀  Server ready at ${port}`);

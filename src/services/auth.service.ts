@@ -6,8 +6,11 @@ class AuthService {
     usersId: string,
     expiredAt: Date
   ): Promise<IRefreshToken> {
-    const refreshToken = new RefreshToken({ token, usersId, expiredAt });
-    return await refreshToken.save();
+    return await RefreshToken.findOneAndUpdate(
+      { usersId },
+      { token, expiredAt },
+      { upsert: true, new: true }
+    );
   }
 }
 
