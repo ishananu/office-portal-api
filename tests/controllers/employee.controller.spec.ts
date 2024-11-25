@@ -78,7 +78,7 @@ describe('EmployeeController', () => {
 
       req.query = { p: '1', s: '20' };
 
-      await EmployeeController.getEmployee(req as Request, res as Response);
+      await EmployeeController.getEmployee(req as Request);
 
       expect(EmployeeService.getEmployee).toHaveBeenCalled();
       expect(statusMock).toHaveBeenCalledWith(200);
@@ -92,7 +92,7 @@ describe('EmployeeController', () => {
       const mockError = new Error('Error fetching employees');
       (EmployeeService.getEmployee as jest.Mock).mockRejectedValue(mockError);
 
-      await EmployeeController.getEmployee(req as Request, res as Response);
+      await EmployeeController.getEmployee(req as Request);
 
       expect(EmployeeService.getEmployee).toHaveBeenCalled();
       expect(statusMock).toHaveBeenCalledWith(500);

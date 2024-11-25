@@ -5,7 +5,11 @@ import { IPagination } from '@shared/types';
 class EmployeeService {
   async createEmployee(data: Partial<IEmployee>): Promise<IEmployee> {
     const employee = new Employee(data);
-    return await employee.save();
+
+    const savedData = await employee.save();
+    const objData = savedData.toObject() as { [key: string]: any };
+    delete objData.passowrd;
+    return savedData;
   }
 
   async getEmployee(pagination: IPagination): Promise<IEmployee[]> {

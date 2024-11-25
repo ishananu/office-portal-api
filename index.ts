@@ -15,7 +15,7 @@ const startServer = () => {
   const app: Express = express();
   const port = config.port || 3000;
 
-  app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
+  app.use(cors({ origin: 'http://localhost:3001', credentials: true }));
   app.use(helmet());
   app.use(cookieParser());
   app.use(bodyParser.urlencoded({ extended: true }));
