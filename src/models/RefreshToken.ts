@@ -1,6 +1,6 @@
 import { Schema, model, Document } from 'mongoose';
 export interface IRefreshToken extends Document {
-  id: string;
+  id: number;
   createdAt?: Date;
   updatedAt?: Date;
   expiredAt?: Date;
@@ -9,6 +9,7 @@ export interface IRefreshToken extends Document {
 }
 
 const RefreshTokenSchema = new Schema<IRefreshToken>({
+  id: { type: Number, required: true },
   usersId: {
     type: String,
     required: true,
@@ -25,7 +26,8 @@ const RefreshTokenSchema = new Schema<IRefreshToken>({
   updatedAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  expiredAt: { type: Date }
 });
 
 const RefreshToken = model<IRefreshToken>('RefreshToken', RefreshTokenSchema);

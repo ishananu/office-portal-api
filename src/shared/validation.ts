@@ -65,10 +65,15 @@ const signinSchema = Joi.object({
   pass: Joi.string().min(5).required()
 });
 
+const tokenSchema = Joi.object({
+  token: Joi.string().min(5).required()
+});
+
 export {
   saveEmployeeSchma,
   updateEmployeeSchema,
   saveProductSchema,
   updateProductSchema,
-  signinSchema
+  signinSchema,
+  tokenSchema
 };
