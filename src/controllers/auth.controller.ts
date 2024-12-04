@@ -75,7 +75,13 @@ class AuthController {
     req: Request,
     _res: Response
   ): Promise<
-    | { token: string; name: string; id: string; refreshToken: string }
+    | {
+        token: string;
+        name: string;
+        id: string;
+        refreshToken: string;
+        email: string;
+      }
     | undefined
   > => {
     const { email, pass } = req.body;
@@ -96,6 +102,7 @@ class AuthController {
       token: token.accessToken,
       name: user.name,
       id: user.id,
+      email,
       refreshToken: token.refreshToken!
     };
   };
