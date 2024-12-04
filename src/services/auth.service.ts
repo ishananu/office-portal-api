@@ -16,8 +16,9 @@ class AuthService {
     return await RefreshToken.findOneAndDelete({ token });
   }
 
-  async getRereshTokenCount(userId: string, token: string): Promise<number> {
-    return await RefreshToken.countDocuments({ userId, token });
+  async getRereshTokenCount(usersId: string, token: string): Promise<number> {
+    const logAll = await RefreshToken.find({ usersId, token });
+    return await RefreshToken.countDocuments({ usersId, token });
   }
 }
 

@@ -22,6 +22,7 @@ function getUser(req: Request): ITokenPayload {
       token,
       config.secretToken as jwt.Secret
     ) as ITokenPayload;
+
     return user;
   } catch (err) {
     throw {
@@ -48,6 +49,8 @@ export async function userRequired(
     req.body = Array.isArray(req.body)
       ? { data: req.body, token: user }
       : { ...req.body, token: user };
+
+    console.log('req.body ', req.body);
 
     next();
   } catch (err) {

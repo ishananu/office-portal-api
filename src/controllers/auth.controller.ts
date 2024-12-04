@@ -22,7 +22,8 @@ class AuthController {
   };
 
   refreshToken = async (req: Request) => {
-    const jidToken = req.cookies?.jid;
+    const jidToken = req.body?.token;
+
     if (!jidToken) {
       throw {
         name: 'Not authorized',
@@ -56,7 +57,10 @@ class AuthController {
         const newToken = await createSignInUserToken({
           id: userId
         });
-        return { token: newToken.accessToken };
+
+        return {
+          token: newToken.accessToken
+        };
       } else {
         throw {
           name: 'Not authorized',
@@ -69,30 +73,38 @@ class AuthController {
 
   loginUser = async (
     req: Request,
-    res: Response
-  ): Promise<{ token: string; name: string; id: string } | undefined> => {
+    _res: Response
+  ): Promise<
+    | { token: string; name: string; id: string; refreshToken: string }
+    | undefined
+  > => {
     const { email, pass } = req.body;
     const user = await employeeService.getEmployeeBy('email', email);
     const result = await bcrypt.compare(pass?.trim(), user?.password);
 
     if (!result) {
-      throw new Error('Invalid email or password');
+      throw {
+        code: EResponseCode.FORBIDDEN,
+        message: 'Invalid email or password'
+      };
       return;
     }
 
     const token = await this.generateToken(user.id.toString());
 
-    res.cookie('jid', token.refreshToken, {
-      httpOnly: false,
-      sameSite: 'none',
-      secure: true
-    });
-
     return {
       token: token.accessToken,
       name: user.name,
-      id: user.id
+      id: user.id,
+      refreshToken: token.refreshToken!
     };
+  };
+
+  logOutUser = async (req: Request, res: Response): Promise<boolean> => {
+    console.log('REQ ', JSON.stringify(req.body));
+    await AuthService.destroyRefreshToken(req?.body?.token?.id);
+    res.cookie('jid', '');
+    return true;
   };
 }
 
