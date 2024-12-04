@@ -85,7 +85,15 @@ class AuthController {
     | undefined
   > => {
     const { email, pass } = req.body;
+    console.log('req.body ', req.body);
+
     const user = await employeeService.getEmployeeBy('email', email);
+    if (!user) {
+      throw {
+        code: EResponseCode.ERROR,
+        message: 'Cannot find relevant records'
+      };
+    }
     const result = await bcrypt.compare(pass?.trim(), user?.password);
 
     if (!result) {
