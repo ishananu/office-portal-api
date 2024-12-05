@@ -14,12 +14,14 @@ const saveEmployeeSchma = Joi.object({
     'any.required': 'Email is required.'
   }),
 
-  password: Joi.string().min(8).max(100).required().messages({
+  password: Joi.string().min(8).max(100).messages({
     'string.base': 'Password must be a string.',
     'string.min': 'Password must be at least 8 characters long.',
     'string.max': 'Password must be at most 100 characters long.',
     'any.required': 'Password is required.'
-  })
+  }),
+
+  img: Joi.string().min(5).max(50)
 });
 
 const updateEmployeeSchema = saveEmployeeSchma.fork(

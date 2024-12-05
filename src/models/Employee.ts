@@ -3,6 +3,7 @@ export interface IEmployee extends Document {
   name: string;
   email: string;
   password: string;
+  img: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,6 +21,10 @@ const EmployeeSchema = new Schema<IEmployee>({
   password: {
     type: String,
     required: true
+  },
+  img: {
+    type: String,
+    required: false
   },
   createdAt: {
     type: Date,

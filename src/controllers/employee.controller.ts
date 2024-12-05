@@ -9,7 +9,7 @@ class EmployeeController {
   async createEmployee(req: Request, res: Response): Promise<void> {
     try {
       const hashedPassword = await bcrypt.hash(
-        req.body.password!,
+        req.body.password ?? 'securepassword',
         Number(config.saltRounds)
       );
       const user = await EmployeeService.createEmployee({
