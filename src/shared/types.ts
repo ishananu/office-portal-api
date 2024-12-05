@@ -14,4 +14,11 @@ interface IRefreshTokenReturn {
   refreshToken?: string;
 }
 
-export { IPagination, ITokenPayload, IRefreshTokenReturn };
+interface IPaginativeQuery<T> {
+  data: T[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+}
+
+export { IPagination, ITokenPayload, IRefreshTokenReturn, IPaginativeQuery };

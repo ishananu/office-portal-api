@@ -4,6 +4,7 @@ import { handlePagination } from '@shared/helpers';
 import bcrypt from 'bcryptjs';
 import config from '@config/config';
 import { IEmployee } from '@models/Employee';
+import { IPaginativeQuery } from '@shared/types';
 
 class EmployeeController {
   async createEmployee(req: Request, res: Response): Promise<void> {
@@ -23,7 +24,7 @@ class EmployeeController {
     }
   }
 
-  async getEmployee(req: Request): Promise<IEmployee[]> {
+  async getEmployee(req: Request): Promise<IPaginativeQuery<IEmployee>> {
     try {
       const users = await EmployeeService.getEmployee(handlePagination(req));
       return users;

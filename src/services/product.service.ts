@@ -1,6 +1,6 @@
 import Product, { IProduct } from '@models/Product';
 import { paginateQuery } from '@shared/helpers';
-import { IPagination } from '@shared/types';
+import { IPagination, IPaginativeQuery } from '@shared/types';
 
 class ProductService {
   async createProduct(data: Partial<IProduct>): Promise<IProduct> {
@@ -8,7 +8,9 @@ class ProductService {
     return await product.save();
   }
 
-  async getProduct(pagination: IPagination): Promise<IProduct[]> {
+  async getProduct(
+    pagination: IPagination
+  ): Promise<IPaginativeQuery<IProduct>> {
     return paginateQuery<IProduct>(Product, {}, pagination);
   }
 

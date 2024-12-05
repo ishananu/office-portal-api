@@ -81,6 +81,7 @@ class AuthController {
         id: string;
         refreshToken: string;
         email: string;
+        img: string;
       }
     | undefined
   > => {
@@ -111,6 +112,7 @@ class AuthController {
       name: user.name,
       id: user.id,
       email,
+      img: user.img,
       refreshToken: token.refreshToken!
     };
   };

@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { IPagination, IRefreshTokenReturn } from './types';
+import { IPagination, IPaginativeQuery, IRefreshTokenReturn } from './types';
 import jwt from 'jsonwebtoken';
 import config from '@config/config';
 
@@ -26,14 +26,22 @@ async function paginateQuery<T>(
   pagination: IPagination = { skip: 0, limit: 10 },
   projection: Record<string, 1 | 0> = {},
   options: Record<string, any> = {}
-): Promise<T[]> {
+): Promise<IPaginativeQuery<T>> {
   const { skip = 0, limit = 10 } = pagination;
-  return await model
+
+  const data = await model
     .find(query, projection, options)
     .skip(skip)
     .limit(limit)
     .lean()
     .exec();
+  const totalCount = await model.countDocuments();
+  return {
+    data,
+    totalCount,
+    totalPages: Math.ceil(totalCount / limit),
+    currentPage: skip / limit + 1
+  };
 }
 
 function generateAccessToken(user): string {

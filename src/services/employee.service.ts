@@ -1,6 +1,6 @@
 import Employee, { IEmployee } from '@models/Employee';
 import { paginateQuery } from '@shared/helpers';
-import { IPagination } from '@shared/types';
+import { IPagination, IPaginativeQuery } from '@shared/types';
 
 class EmployeeService {
   async createEmployee(data: Partial<IEmployee>): Promise<IEmployee> {
@@ -12,7 +12,9 @@ class EmployeeService {
     return savedData;
   }
 
-  async getEmployee(pagination: IPagination): Promise<IEmployee[]> {
+  async getEmployee(
+    pagination: IPagination
+  ): Promise<IPaginativeQuery<IEmployee>> {
     return paginateQuery<IEmployee>(Employee, {}, pagination, { password: 0 });
   }
 
