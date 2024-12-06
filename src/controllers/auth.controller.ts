@@ -47,6 +47,8 @@ class AuthController {
       }
 
       const userId: string = tokenPayload.data.id;
+      const userData = await employeeService.getEmployeeBy('_id', userId);
+      console.log('userData ', userId);
 
       const dbTokenCount = await AuthService.getRereshTokenCount(
         userId,
@@ -59,7 +61,10 @@ class AuthController {
         });
 
         return {
-          token: newToken.accessToken
+          token: newToken.accessToken,
+          img: userData.img,
+          name: userData.name,
+          email: userData.email
         };
       } else {
         throw {

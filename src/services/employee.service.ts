@@ -18,7 +18,10 @@ class EmployeeService {
     return paginateQuery<IEmployee>(Employee, {}, pagination, { password: 0 });
   }
 
-  async getEmployeeBy(type: 'email' | 'id', val: string): Promise<IEmployee> {
+  async getEmployeeBy(
+    type: 'email' | 'id' | '_id',
+    val: string
+  ): Promise<IEmployee> {
     const selectVal = type === 'email' ? '' : '-password';
     return Employee.findOne({ [type]: val }).select(selectVal);
   }

@@ -156,7 +156,7 @@ employeeRouter.post(
 
 employeeRouter.get(
   '/',
-  // userRequired,
+  userRequired,
   asyncMiddleware(EmployeeController.getEmployee)
 );
 
