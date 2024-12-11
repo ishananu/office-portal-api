@@ -5,7 +5,6 @@ import { IPagination, IPaginativeQuery } from '@shared/types';
 class EmployeeService {
   async createEmployee(data: Partial<IEmployee>): Promise<IEmployee> {
     const employee = new Employee(data);
-
     const savedData = await employee.save();
     const objData = savedData.toObject() as { [key: string]: any };
     delete objData.passowrd;

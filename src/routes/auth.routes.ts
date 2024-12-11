@@ -1,9 +1,14 @@
 import AuthController from '@controllers/auth.controller';
+import employeeController from '@controllers/employee.controller';
 import asyncMiddleware from '@middleware/async';
 import { userRequired } from '@middleware/authenticate';
 // import { userNotRequired } from '@middleware/authenticate';
 import validateReq from '@middleware/validateReq';
-import { signinSchema, tokenSchema } from '@shared/validation';
+import {
+  saveEmployeeSchma,
+  signinSchema,
+  tokenSchema
+} from '@shared/validation';
 import { Router } from 'express';
 
 const authRouter = Router();
@@ -26,4 +31,9 @@ authRouter.post(
   asyncMiddleware(AuthController.logOutUser)
 );
 
+authRouter.post(
+  '/signup',
+  validateReq(saveEmployeeSchma),
+  employeeController.createEmployee
+);
 export default authRouter;

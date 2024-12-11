@@ -151,7 +151,7 @@ const employeeRouter = Router();
 employeeRouter.post(
   '/',
   validateReq(saveEmployeeSchma),
-  EmployeeController.createEmployee
+  asyncMiddleware(EmployeeController.createEmployee)
 );
 
 employeeRouter.get(
@@ -160,8 +160,11 @@ employeeRouter.get(
   asyncMiddleware(EmployeeController.getEmployee)
 );
 
-employeeRouter.put('/:id', EmployeeController.updateEmployee);
+employeeRouter.put('/:id', asyncMiddleware(EmployeeController.updateEmployee));
 
-employeeRouter.delete('/:id', EmployeeController.deleteEmployee);
+employeeRouter.delete(
+  '/:id',
+  asyncMiddleware(EmployeeController.deleteEmployee)
+);
 
 export default employeeRouter;

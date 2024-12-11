@@ -21,7 +21,7 @@ const saveEmployeeSchma = Joi.object({
     'any.required': 'Password is required.'
   }),
 
-  img: Joi.string().min(5).max(50)
+  img: Joi.string().max(50).optional().default('').allow('')
 });
 
 const updateEmployeeSchema = saveEmployeeSchma.fork(
